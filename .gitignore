@@ -1,5 +1,14 @@
-node_modules/*
-_site/
-.jekyll-cache
-.husky
-Gemfile.lock
+# Node
+node_modules
+
+# Astro
+dist
+.astro
+
+# Env (public config only, but keep local values out of git)
+.env
+
+# IDE
+.idea
+.vscode
+

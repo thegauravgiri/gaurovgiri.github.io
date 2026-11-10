@@ -1,0 +1,68 @@
+---
+import "../styles/global.css";
+interface Props { title?: string; description?: string; wide?: boolean; stage?: boolean }
+const { title, description = "Gaurav Giri is an AI engineer in Kathmandu working on speech, language and vision. Talk to his voice avatar in English or Nepali.", wide = false, stage = false } = Astro.props;
+const fullTitle = title ? `${title}, Gaurav Giri` : "Gaurav Giri, AI engineer";
+const nav = [
+  { href: "/blog", label: "Writing" },
+  { href: "/projects", label: "Projects" },
+  { href: "/achievements", label: "Achievements" },
+  { href: "/cv", label: "CV" },
+  { href: "/about", label: "About" },
+];
+const frame = wide ? "max-w-7xl" : "max-w-3xl";
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0e1519" />
+    <link rel="icon" href="/favicon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Writing" href="/rss.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Devanagari:wdth,wght@75..125,300..750&family=Anek+Latin:wdth,wght@75..125,300..750&display=swap" />
+    <script is:inline>
+      try {
+        const t = localStorage.getItem("theme");
+        if (t !== "light") document.documentElement.classList.add("dark"); // dark by default
+      } catch {}
+    </script>
+  </head>
+  <body class="min-h-screen overflow-x-clip">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-on-ink">Skip to content</a>
+    <header class:list={["mx-auto grid grid-cols-[1fr_auto]", stage ? "on-stage absolute inset-x-0 top-0 z-20 max-w-7xl" : frame," items-center gap-y-1 px-4 pt-5 pb-3 sm:flex sm:gap-x-6 sm:px-8"]}>
+      <a href="/" class="title text-lg" aria-current={path === "/" ? "page" : undefined}>Gaurav Giri</a>
+      <nav aria-label="Main" class="col-span-2 row-start-2 -mx-4 flex gap-x-1 overflow-x-auto px-2 text-[0.98rem] [scrollbar-width:none] sm:order-none sm:mx-0 sm:flex-1 sm:justify-end sm:px-0">
+        {nav.map((n) => (
+          <a href={n.href} aria-current={path.startsWith(n.href) ? "page" : undefined}
+             class="shrink-0 rounded-full px-2.5 py-1.5 text-slate hover:text-ink aria-[current=page]:text-ink aria-[current=page]:underline aria-[current=page]:decoration-marigold aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-[6px]">{n.label}</a>
+        ))}
+      </nav>
+      <button id="theme" type="button" class="col-start-2 row-start-1 grid size-9 place-items-center rounded-full text-slate hover:text-ink" aria-label="Switch light or dark theme">
+        <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
+      </button>
+    </header>
+    <main id="main" class:list={stage ? [] : ["mx-auto px-4 sm:px-8 pb-20 pt-6", frame]}><slot /></main>
+    <footer class:list={["mx-auto flex flex-wrap", stage ? "max-w-7xl" : frame, " items-center gap-x-6 gap-y-2 border-t border-haze px-4 py-8 text-sm text-slate sm:px-8"]}>
+      <span>Gaurav Giri, Kathmandu</span>
+      <span class="flex gap-5">
+        <a class="link" href="https://github.com/thegauravgiri">GitHub</a>
+        <a class="link" href="https://www.linkedin.com/in/thegauravgiri">LinkedIn</a>
+        <a class="link" href="mailto:gaurovgiri@gmail.com">Email</a>
+        <a class="link" href="/rss.xml">RSS</a>
+      </span>
+    </footer>
+    <script is:inline>
+      document.getElementById("theme").addEventListener("click", () => {
+        const dark = document.documentElement.classList.toggle("dark");
+        try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch {}
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+import Agent from "../components/agent/Agent";
+const posts = (await getCollection("blog", (p) => !p.data.draft)).sort((a, b) => +b.data.date - +a.data.date).slice(0, 3);
+const fmt = (d: Date) => d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+---
+<Base stage>
+  <Agent client:load api={import.meta.env.PUBLIC_AVATAR_API ?? ""} turnstileSiteKey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? ""} />
+
+  <div class="mx-auto grid max-w-7xl gap-x-16 gap-y-14 px-4 py-20 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+    <section aria-labelledby="who">
+      <h2 id="who" class="title text-3xl">Who you’re talking to</h2>
+      <p class="mt-5 max-w-[46ch] text-lg">
+        I’m an AI engineer in Kathmandu. I build speech, language and vision systems, and I lead developer communities in Nepal.
+      </p>
+      <p class="mt-4 max-w-[46ch] text-slate">
+        The avatar above is a 3D model of my face, fitted from one photo, speaking with my cloned voice. It can answer questions about my work in English or Nepali.
+      </p>
+      <ul class="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+        <li><a class="link" href="/projects">See projects</a></li>
+        <li><a class="link" href="/cv">Read my CV</a></li>
+        <li><a class="link" href="/about">More about me</a></li>
+      </ul>
+    </section>
+
+    {posts.length > 0 && (
+      <section aria-labelledby="recent">
+        <h2 id="recent" class="title text-3xl">Recent writing</h2>
+        <ul class="mt-5 divide-y divide-haze border-y border-haze">
+          {posts.map((p) => (
+            <li>
+              <a href={`/blog/${p.id}`} class="group grid gap-1 py-4 sm:grid-cols-[8rem_1fr] sm:gap-6">
+                <time class="text-slate" datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time>
+                <span class="font-medium group-hover:underline group-hover:decoration-marigold group-hover:decoration-2 group-hover:underline-offset-4">{p.data.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a class="link mt-4 inline-block" href="/blog">All writing</a>
+      </section>
+    )}
+  </div>
+</Base>

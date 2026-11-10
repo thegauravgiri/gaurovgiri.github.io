@@ -1,0 +1,133 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Palette: a misty Kathmandu morning. The only warm colour on the page is the avatar itself;
+   marigold is reserved for the live voice state. */
+:root {
+  --mist: #e4eaee;      /* page */
+  --haze: #cbd5dc;      /* rules, quiet surfaces */
+  --well: #d7e0e6;      /* transcript well */
+  --slate: #56656f;     /* secondary text */
+  --ink: #102331;       /* text, primary actions */
+  --on-ink: #f3f6f8;
+  --marigold: #f0a202;  /* voice is live */
+  --aperture: #102331;  /* behind the avatar */
+}
+.dark {
+  --mist: #0e1519;
+  --haze: #26343d;
+  --well: #16212a;
+  --slate: #98a8b2;
+  --ink: #eef2f4;
+  --on-ink: #0e1519;
+  --aperture: #1a2c38;
+}
+
+@theme inline {
+  --color-mist: var(--mist);
+  --color-haze: var(--haze);
+  --color-well: var(--well);
+  --color-slate: var(--slate);
+  --color-ink: var(--ink);
+  --color-on-ink: var(--on-ink);
+  --color-marigold: var(--marigold);
+  --color-aperture: var(--aperture);
+  --font-sans: "Anek Latin", "Anek Devanagari", ui-sans-serif, system-ui, sans-serif;
+}
+
+html { background: var(--mist); color: var(--ink); color-scheme: light; }
+html.dark { color-scheme: dark; }
+body { font-family: var(--font-sans); font-size: 1.0625rem; line-height: 1.55; font-variation-settings: "wdth" 100; -webkit-font-smoothing: antialiased; }
+
+/* Display type: expanded width is the voice of the page. */
+.display { font-weight: 650; font-variation-settings: "wdth" 118; letter-spacing: -0.015em; line-height: 0.95; }
+.title { font-weight: 600; font-variation-settings: "wdth" 110; letter-spacing: -0.01em; line-height: 1.1; }
+
+:focus-visible { outline: 2px solid var(--marigold); outline-offset: 3px; border-radius: 6px; }
+::selection { background: var(--marigold); color: #102331; }
+
+.btn { display: inline-flex; align-items: center; gap: .5rem; border-radius: 999px; padding: .7rem 1.25rem; font-weight: 550; line-height: 1; transition: background-color .15s, color .15s, transform .1s; }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--ink); color: var(--on-ink); }
+.btn-primary:hover { background: color-mix(in oklab, var(--ink) 86%, var(--mist)); }
+.btn-quiet { color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--haze); }
+.btn-quiet:hover { box-shadow: inset 0 0 0 1.5px var(--slate); }
+.btn-danger { color: #b3261e; box-shadow: inset 0 0 0 1.5px color-mix(in oklab, #b3261e 35%, transparent); }
+.dark .btn-danger { color: #ff8a80; }
+
+.link { text-decoration: underline; text-decoration-color: var(--haze); text-underline-offset: .2em; text-decoration-thickness: 1.5px; }
+.link:hover { text-decoration-color: currentColor; }
+
+/* Long-form text */
+.prose {
+  --tw-prose-body: var(--ink);
+  --tw-prose-headings: var(--ink);
+  --tw-prose-links: var(--ink);
+  --tw-prose-bold: var(--ink);
+  --tw-prose-quotes: var(--slate);
+  --tw-prose-quote-borders: var(--marigold);
+  --tw-prose-bullets: var(--slate);
+  --tw-prose-counters: var(--slate);
+  --tw-prose-hr: var(--haze);
+  --tw-prose-code: var(--ink);
+  --tw-prose-captions: var(--slate);
+  font-size: 1.125rem;
+  max-width: 66ch;
+}
+.prose :where(h2, h3) { font-weight: 600; font-variation-settings: "wdth" 110; }
+
+/* ---------- The stage (home page) ---------- */
+.on-stage, .on-stage .text-slate { color: rgb(255 255 255 / .82); }
+.on-stage a:hover, .on-stage button:hover, .on-stage [aria-current=page] { color: #fff; }
+
+.stage { --feed: min(100vw, 34rem); --top: 5.75rem; padding-top: var(--top); }
+.feed-frame { position: relative; display: block; width: var(--feed); aspect-ratio: 1; margin-inline: auto; }
+.feed-plate { position: absolute; top: var(--top); left: 50%; translate: -50% 0; filter: brightness(.9) saturate(1.1); }
+/* Melt the edges of the feed into the backdrop so it never reads as a box. */
+.feed-mask, .feed-plate {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent), linear-gradient(to bottom, #000 80%, transparent);
+  -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent), linear-gradient(to bottom, #000 80%, transparent);
+  mask-composite: intersect;
+}
+.feed-plate {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent), linear-gradient(to bottom, transparent, #000 18%, #000 80%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent), linear-gradient(to bottom, transparent, #000 18%, #000 80%, transparent);
+}
+.stage[data-rig="glb"] .feed-plate { display: none; }
+.stage-ui { margin-top: -5.5rem; }
+@media (min-width: 1024px) {
+  .stage { --feed: min(100svh, 62rem); --top: 0px; height: max(100svh, 640px); }
+  .feed-frame { margin: 0; position: absolute; top: 0; left: 50%; translate: -50% 0; }
+  .stage-ui { position: absolute; inset: auto 0 0 0; margin-top: 0; padding-bottom: 2.5rem; }
+}
+/* Film-subtitle captions. */
+.caption { text-shadow: 0 1px 2px rgb(0 0 0 / .6), 0 0 24px rgb(0 0 0 / .45); text-wrap: balance; }
+.stage-ui::before { content: ""; position: absolute; inset: -7rem -50vw 0; z-index: -1; background: linear-gradient(to top, rgb(6 10 13 / .85), rgb(6 10 13 / .55) 55%, transparent); pointer-events: none; }
+
+.btn-onair { background: #fff; color: #0e1519; padding: .85rem 1.5rem; }
+.btn-onair:hover { background: #ffe9a8; }
+.btn-glass { background: rgb(255 255 255 / .12); color: #fff; backdrop-filter: blur(10px); }
+.btn-glass:hover { background: rgb(255 255 255 / .2); }
+.btn-end { background: #e5484d; color: #fff; }
+.btn-end:hover { background: #f2555a; }
+/* Control bars on the stage: one surface per state, everything 48px tall. */
+.bar { display: flex; align-items: center; gap: .375rem; padding: .375rem; border-radius: 999px; background: rgb(8 12 16 / .55); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .12); backdrop-filter: blur(14px); }
+.bar:focus-within { box-shadow: inset 0 0 0 1px rgb(255 255 255 / .28); }
+.icon-btn { position: relative; display: grid; place-items: center; flex: none; width: 3rem; height: 3rem; border-radius: 999px; color: #fff; background: rgb(255 255 255 / .1); transition: background-color .15s, color .15s, opacity .15s; }
+.icon-btn:hover { background: rgb(255 255 255 / .2); }
+.icon-btn[aria-pressed="true"] { background: #fff; color: #0e1519; }
+.icon-btn-end { background: #e5484d; }
+.icon-btn-end:hover { background: #f2555a; }
+.icon-btn-send { background: #fff; color: #0e1519; }
+.icon-btn-send:hover { background: #ffe9a8; }
+.icon-btn:disabled { background: rgb(255 255 255 / .08); color: rgb(255 255 255 / .35); cursor: default; }
+.badge { position: absolute; top: -.15rem; right: -.15rem; min-width: 1.15rem; height: 1.15rem; padding: 0 .3rem; border-radius: 999px; background: var(--marigold); color: #0e1519; font-size: .7rem; font-weight: 700; line-height: 1.15rem; }
+.spinner { width: 1em; height: 1em; border-radius: 999px; border: 2px solid currentColor; border-right-color: transparent; animation: spin .8s linear infinite; }
+@keyframes spin { to { rotate: 1turn; } }
+.call-wave { display: inline-flex; align-items: center; gap: .75rem; border-radius: 999px; padding: .45rem 1rem; background: rgb(0 0 0 / .35); backdrop-filter: blur(10px); }
+.wave-key { display: inline-flex; flex: none; align-items: center; gap: .35rem; font-size: .8125rem; color: rgb(255 255 255 / .8); }
+.wave-key > span { width: .55rem; height: .55rem; border-radius: 999px; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

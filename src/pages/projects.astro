@@ -1,0 +1,16 @@
+---
+import Base from "../layouts/Base.astro";
+import { projects } from "../data/projects";
+---
+<Base title="Projects">
+  <h1 class="display text-5xl">Projects</h1>
+  <ul class="mt-10 divide-y divide-haze border-y border-haze">
+    {projects.map((p) => (
+      <li class="py-6">
+        <h2 class="title text-2xl"><a class="link" href={p.url} target="_blank" rel="noopener noreferrer">{p.name}</a></h2>
+        <p class="mt-2 max-w-[60ch]">{p.description}</p>
+        <p class="mt-2 text-slate">Built with {p.tags.join(", ")}</p>
+      </li>
+    ))}
+  </ul>
+</Base>

@@ -1,0 +1,31 @@
+---
+import Base from "../layouts/Base.astro";
+type Item = { head: string; body?: string };
+const sections: { name: string; items: Item[] }[] = [
+  { name: "Experience", items: [{ head: "AI Engineer, EkGhanti Services", body: "Research, build and deploy NLP (text and speech) and computer vision systems, and the infrastructure that runs them at scale." }] },
+  { name: "Education", items: [{ head: "B.E. Computer Engineering, Kantipur Engineering College" }] },
+  { name: "Community", items: [{ head: "Ed-Tech Lead, Google Developer Groups Kathmandu" }, { head: "Notion Campus Leader, Kantipur Engineering College" }] },
+  { name: "Skills", items: [{ head: "Python, PyTorch, TensorFlow, Google Cloud Platform, Flutter" }] },
+];
+---
+<Base title="CV">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <h1 class="display text-5xl">CV</h1>
+    <a class="btn btn-primary" href="/Gaurav_Giri_CV.pdf" download>Download PDF</a>
+  </div>
+  <div class="mt-10 border-t border-haze">
+    {sections.map((s) => (
+      <section class="grid gap-2 border-b border-haze py-6 sm:grid-cols-[10rem_1fr] sm:gap-8">
+        <h2 class="title text-lg text-slate">{s.name}</h2>
+        <div class="space-y-4">
+          {s.items.map((i) => (
+            <div>
+              <p class="font-medium">{i.head}</p>
+              {i.body && <p class="mt-1 max-w-[60ch] text-slate">{i.body}</p>}
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+</Base>

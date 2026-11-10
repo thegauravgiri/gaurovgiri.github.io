@@ -1,19 +1,25 @@
 ---
 import Base from "../layouts/Base.astro";
 import { achievements } from "../data/achievements";
+const groups = [...new Set(achievements.map((a) => a.group))];
 ---
-<Base title="Achievements">
+<Base title="Achievements" description="Competitions, research papers and community work by Gaurav Giri.">
   <h1 class="display text-5xl">Achievements</h1>
-  <ul class="mt-10 divide-y divide-haze border-y border-haze">
-    {achievements.map((a) => (
-      <li class="grid gap-1 py-6 sm:grid-cols-[1fr_auto] sm:gap-6">
-        <div>
-          <h2 class="title text-2xl">{a.title}</h2>
-          <p class="mt-1 text-slate">{a.org}</p>
-          <p class="mt-2 max-w-[60ch]">{a.description}</p>
-        </div>
-        {a.year && <p class="text-slate sm:text-right">{a.year}</p>}
-      </li>
-    ))}
-  </ul>
+  {groups.map((g) => (
+    <section class="mt-12">
+      <h2 class="title text-lg text-slate">{g}</h2>
+      <ul class="mt-3 divide-y divide-haze border-y border-haze">
+        {achievements.filter((a) => a.group === g).map((a) => (
+          <li class="grid gap-1 py-5 sm:grid-cols-[1fr_auto] sm:gap-6">
+            <div>
+              <h3 class="title text-xl">{a.title}</h3>
+              <p class="mt-1 text-slate">{a.org}</p>
+              <p class="mt-2 max-w-[60ch]">{a.description}</p>
+            </div>
+            {a.year && <p class="text-slate sm:text-right">{a.year}</p>}
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
 </Base>

@@ -1,15 +1,37 @@
 ---
 import Base from "../layouts/Base.astro";
-import { projects } from "../data/projects";
+import { projects, type Project } from "../data/projects";
+const featured = projects.filter((p) => p.featured);
+const more = projects.filter((p) => !p.featured);
+const external = (p: Project) => !!p.url && /^https?:/.test(p.url);
 ---
-<Base title="Projects">
+<Base title="Projects" description="Things Gaurav Giri has built: voice AI, AI agents, computer vision research, systems programming and games.">
   <h1 class="display text-5xl">Projects</h1>
+  <p class="mt-4 max-w-[60ch] text-slate">Things I've built at night, at hackathons and for research. Work for clients isn't listed here.</p>
+
   <ul class="mt-10 divide-y divide-haze border-y border-haze">
-    {projects.map((p) => (
+    {featured.map((p) => (
       <li class="py-6">
-        <h2 class="title text-2xl"><a class="link" href={p.url} target="_blank" rel="noopener noreferrer">{p.name}</a></h2>
+        <h2 class="title text-2xl">
+          {p.url ? <a class="link" href={p.url} {...(external(p) ? { target: "_blank", rel: "noopener noreferrer" } : {})}>{p.name}</a> : p.name}
+        </h2>
+        {p.note && <p class="mt-1 text-sm font-medium text-slate">{p.note}</p>}
         <p class="mt-2 max-w-[60ch]">{p.description}</p>
         <p class="mt-2 text-slate">Built with {p.tags.join(", ")}</p>
+      </li>
+    ))}
+  </ul>
+
+  <h2 class="title mt-14 text-2xl">More things I've made</h2>
+  <ul class="mt-4 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+    {more.map((p) => (
+      <li>
+        <h3 class="font-semibold">
+          {p.url ? <a class="link" href={p.url} target="_blank" rel="noopener noreferrer">{p.name}</a> : p.name}
+        </h3>
+        {p.note && <p class="text-sm text-slate">{p.note}</p>}
+        <p class="mt-1 text-[0.95rem] leading-snug">{p.description}</p>
+        <p class="mt-1 text-sm text-slate">{p.tags.join(", ")}</p>
       </li>
     ))}
   </ul>

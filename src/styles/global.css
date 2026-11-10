@@ -131,3 +131,12 @@ body { font-family: var(--font-sans); font-size: 1.0625rem; line-height: 1.55; f
 .wave-key > span { width: .55rem; height: .55rem; border-radius: 999px; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* Printing (the CV's "Save as PDF"): always light, black on white, no site chrome. */
+@media print {
+  :root, .dark { --mist: #fff; --haze: #d5dbe0; --slate: #44525c; --ink: #0b1a24; --on-ink: #fff; color-scheme: light; }
+  html, body { background: #fff; font-size: 10.5pt; }
+  @page { margin: 14mm 14mm; }
+  main { padding-top: 0 !important; }
+  .print\:hidden { display: none !important; } /* beats .btn's display */
+}

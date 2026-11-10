@@ -1,27 +1,114 @@
 ---
 import Base from "../layouts/Base.astro";
-type Item = { head: string; body?: string };
+type Item = { head: string; meta?: string; body?: string; points?: string[] };
 const sections: { name: string; items: Item[] }[] = [
-  { name: "Experience", items: [{ head: "AI Engineer, EkGhanti Services", body: "Research, build and deploy NLP (text and speech) and computer vision systems, and the infrastructure that runs them at scale." }] },
-  { name: "Education", items: [{ head: "B.E. Computer Engineering, Kantipur Engineering College" }] },
-  { name: "Community", items: [{ head: "Ed-Tech Lead, Google Developer Groups Kathmandu" }, { head: "Notion Campus Leader, Kantipur Engineering College" }] },
-  { name: "Skills", items: [{ head: "Python, PyTorch, TensorFlow, Google Cloud Platform, Flutter" }] },
+  {
+    name: "Summary",
+    items: [{
+      head: "AI and software engineer, Kathmandu",
+      body: "Licensed computer engineer (Nepal Engineering Council) with 5+ years across AI agents and retrieval, Nepali speech AI, computer vision and the backend systems that keep them reliable in production. Published researcher and competitive programmer. Open to remote work and relocation.",
+    }],
+  },
+  {
+    name: "Experience",
+    items: [
+      {
+        head: "AI & Software Engineer, Proshore",
+        meta: "April 2026 to now · Kathmandu, hybrid",
+        points: [
+          "Build multi-agent assistants for international enterprise clients that answer questions over company documents, with citations back to the exact page.",
+          "Retrieval from SharePoint via Microsoft Graph with per-user access control, hybrid search in PostgreSQL with pgvector, and query rewriting for multi-turn follow-ups.",
+          "Evaluation harnesses on every pull request for agent behaviour, tool calling and grounding.",
+          "Reliability work: rate limiting and backoff, durable chat sessions, and moving bulk indexing to a throttled queue so it can't starve live chat.",
+        ],
+      },
+      {
+        head: "AI Engineer, ekGhanti Services",
+        meta: "April 2025 to March 2026 · Kathmandu",
+        points: [
+          "Nepali voice AI for phone calls, with sentiment, intent and automatic summaries; it handled 90,000+ live calls.",
+          "Fine-tuned a Conformer speech-to-text model on Nepali phone audio to 16.8% word error rate, and SpeechT5 text-to-speech with voice cloning and language identification.",
+          "Model-serving layer with dynamic batching and priority queues: 92% lower peak latency across OCR, STT and TTS.",
+          "Handwritten Nepali OCR for citizenship documents (86%+ field accuracy) and a multi-tenant RAG service for four enterprise clients.",
+        ],
+      },
+      {
+        head: "Software Developer (freelance), Anmup Online",
+        meta: "February 2020 to January 2025 · remote",
+        points: [
+          "Flutter app for the Bagmati Provincial Assembly to manage meetings and legislative documents (500+ installs).",
+          "Travel authorisation system for the Public Health Service Office, Jumla, with role-based approvals and PDF orders.",
+          "Secure medical report archive for NDC Dharan; scrapers, APIs and websites for other clients.",
+        ],
+      },
+    ],
+  },
+  {
+    name: "Research",
+    items: [
+      { head: "Lightweight parasitic egg detection using a modified YOLOv11 with Ghost convolutions, hybrid SimAM-ECA attention and DropBlock", meta: "International Journal on Engineering Technology, Vol. 3 No. 1, 2025", body: "0.9627 mAP@0.5 and 0.92 F1 with 58% fewer parameters than the baseline." },
+      { head: "CNN-based bird sound detection: a comparative performance study", meta: "International Journal on Engineering Technology, Vol. 2 No. 2, 2025", body: "Mel-spectrogram features; a tuned ResNet50 reached 90.75% accuracy in noisy outdoor audio." },
+    ],
+  },
+  {
+    name: "Education",
+    items: [
+      { head: "B.E. Computer Engineering, Kantipur Engineering College (Tribhuvan University)", meta: "2021 to 2025", body: "Distinction, 81.3%. Merit scholarship in five semesters." },
+      { head: "FuseAI Fellowship, Fusemachines", meta: "2022 to 2023", body: "Deep learning, NLP, computer vision and production ML." },
+      { head: "Data Fellowship, Code for Nepal", meta: "2023 to 2024" },
+      { head: "DevOps Engineering, Broadway Infosys", meta: "2024" },
+    ],
+  },
+  {
+    name: "Skills",
+    items: [
+      { head: "Languages", body: "Python, C/C++, TypeScript, JavaScript, SQL, Bash, Dart" },
+      { head: "AI and ML", body: "PyTorch, Hugging Face, LangChain, LlamaIndex, vLLM; RAG, multi-agent systems, MCP, tool calling; speech (Conformer, SpeechT5, voice cloning); vision (YOLO, OCR, OpenCV); evaluation and guardrails" },
+      { head: "Backend and data", body: "FastAPI, Django, Flask, Node.js; PostgreSQL with pgvector, Redis, Celery; WebSockets, SSE; OAuth 2.1, KMS encryption, RBAC" },
+      { head: "Cloud", body: "Azure (OpenAI, App Service, DevOps), AWS (EC2, S3, Bedrock), Google Cloud (Cloud Run, KMS, BigQuery); Docker, GitHub Actions, NGINX, Linux" },
+    ],
+  },
+  {
+    name: "Awards",
+    items: [
+      { head: "IEEEXtreme 2024: 7th in Nepal, top 700 of 7,000+ teams worldwide" },
+      { head: "Winner: Aarohan 2.0 rapid coding, Locus Hack-A-Week (games), Hackademia, IEEE CS Ideathon" },
+      { head: "Finalist: IEEE “Can You C?”, MLH Semicolon (top 10), Hult Prize IOE 2023" },
+    ],
+  },
+  {
+    name: "Community",
+    items: [
+      { head: "Ed-Tech Lead, Google Developer Groups Kathmandu", meta: "2024 to now" },
+      { head: "Organiser, UbuCon Asia 2025" },
+      { head: "Notion Campus Leader · Leapfrog Student Partner · KEC Computer Club Coordinator" },
+    ],
+  },
 ];
 ---
-<Base title="CV">
+<Base title="CV" description="CV of Gaurav Giri, AI and software engineer in Kathmandu.">
   <div class="flex flex-wrap items-end justify-between gap-4">
-    <h1 class="display text-5xl">CV</h1>
-    <a class="btn btn-primary" href="/Gaurav_Giri_CV.pdf" download>Download PDF</a>
+    <div>
+      <h1 class="display text-5xl">Gaurav Giri</h1>
+      <p class="mt-2 text-slate">gaurovgiri@gmail.com · linkedin.com/in/thegauravgiri · github.com/thegauravgiri</p>
+    </div>
+    <button type="button" class="btn btn-primary print:hidden" onclick="window.print()">Save as PDF</button>
   </div>
   <div class="mt-10 border-t border-haze">
     {sections.map((s) => (
-      <section class="grid gap-2 border-b border-haze py-6 sm:grid-cols-[10rem_1fr] sm:gap-8">
+      <section class="grid gap-2 border-b border-haze py-6 break-inside-avoid-page sm:grid-cols-[9rem_1fr] sm:gap-8">
         <h2 class="title text-lg text-slate">{s.name}</h2>
         <div class="space-y-4">
           {s.items.map((i) => (
-            <div>
+            <div class="break-inside-avoid">
               <p class="font-medium">{i.head}</p>
-              {i.body && <p class="mt-1 max-w-[60ch] text-slate">{i.body}</p>}
+              {i.meta && <p class="text-sm text-slate">{i.meta}</p>}
+              {i.body && <p class="mt-1 max-w-[65ch] text-slate">{i.body}</p>}
+              {i.points && (
+                <ul class="mt-1.5 max-w-[65ch] list-disc space-y-1 pl-5 text-slate">
+                  {i.points.map((p) => <li>{p}</li>)}
+                </ul>
+              )}
             </div>
           ))}
         </div>

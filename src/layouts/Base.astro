@@ -36,7 +36,7 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
   </head>
   <body class="min-h-screen overflow-x-clip">
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-on-ink">Skip to content</a>
-    <header class:list={["mx-auto grid grid-cols-[1fr_auto]", stage ? "on-stage absolute inset-x-0 top-0 z-20 max-w-7xl" : frame," items-center gap-y-1 px-4 pt-5 pb-3 sm:flex sm:gap-x-6 sm:px-8"]}>
+    <header class:list={["mx-auto grid grid-cols-[1fr_auto] print:hidden", stage ? "on-stage absolute inset-x-0 top-0 z-20 max-w-7xl" : frame," items-center gap-y-1 px-4 pt-5 pb-3 sm:flex sm:gap-x-6 sm:px-8"]}>
       <a href="/" class="title text-lg" aria-current={path === "/" ? "page" : undefined}>Gaurav Giri</a>
       <nav aria-label="Main" class="col-span-2 row-start-2 -mx-4 flex gap-x-1 overflow-x-auto px-2 text-[0.98rem] [scrollbar-width:none] sm:order-none sm:mx-0 sm:flex-1 sm:justify-end sm:px-0">
         {nav.map((n) => (
@@ -49,7 +49,7 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
       </button>
     </header>
     <main id="main" class:list={stage ? [] : ["mx-auto px-4 sm:px-8 pb-20 pt-6", frame]}><slot /></main>
-    <footer class:list={["mx-auto flex flex-wrap", stage ? "max-w-7xl" : frame, " items-center gap-x-6 gap-y-2 border-t border-haze px-4 py-8 text-sm text-slate sm:px-8"]}>
+    <footer class:list={["mx-auto flex flex-wrap print:hidden", stage ? "max-w-7xl" : frame, " items-center gap-x-6 gap-y-2 border-t border-haze px-4 py-8 text-sm text-slate sm:px-8"]}>
       <span>Gaurav Giri, Kathmandu</span>
       <span class="flex gap-5">
         <a class="link" href="https://github.com/thegauravgiri">GitHub</a>

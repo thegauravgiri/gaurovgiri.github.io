@@ -1,20 +1,44 @@
 ---
 import Base from "../layouts/Base.astro";
+const facts = [
+  ["Day job", "AI and software engineer at Proshore, building AI assistants that read a company's documents so people don't have to."],
+  ["Phone calls answered", "90,000+. Not by me, by a Nepali voice bot I built. It never got tired; I did."],
+  ["Proudest tiny model", "A parasite-egg detector that lost 58% of its weight and got more useful. Peer-reviewed, even."],
+  ["Lowest-level flex", "A chat server in plain C. Sockets, threads, no frameworks, a lot of valgrind."],
+  ["Most fun side quest", "Minecraft bots that pick a leader, build castles together and rescue each other at night."],
+  ["When not coding", "Making music, designing posters for developer events, and building a piano for the browser."],
+];
 ---
-<Base title="About">
-  <h1 class="display text-5xl">About</h1>
-  <div class="prose mt-10">
-    <p class="lead">I’m an AI engineer in Kathmandu. I work on natural language processing for text and speech, and on computer vision, with a background in app development and backend systems.</p>
+<Base title="About" description="Gaurav Giri: AI engineer in Kathmandu who teaches computers to listen, talk and see, mostly in Nepali.">
+  <h1 class="display text-5xl">Hi, I'm Gaurav.</h1>
+  <div class="prose mt-8">
+    <p class="lead">I teach computers to listen, talk and look at things, preferably in Nepali. I'm an AI engineer in Kathmandu, a licensed computer engineer, and the person whose 3D face is on the <a href="/">home page</a> (go on, say hi to it).</p>
     <blockquote><p>Explorer of knowledge, not prisoner of perfection.</p></blockquote>
-    <h2>What I do</h2>
-    <p>I research, build and deploy AI systems, from training custom models to fine-tuning existing ones for real use. I design the infrastructure those models run on, and I ship them in Flutter apps.</p>
-    <p>Outside work I care about open source, graphic design and music production.</p>
+  </div>
+
+  <h2 class="title mt-12 text-2xl">The quick version</h2>
+  <dl class="mt-4 divide-y divide-haze border-y border-haze">
+    {facts.map(([k, v]) => (
+      <div class="grid gap-1 py-4 sm:grid-cols-[11rem_1fr] sm:gap-6">
+        <dt class="font-semibold">{k}</dt>
+        <dd class="text-slate">{v}</dd>
+      </div>
+    ))}
+  </dl>
+
+  <div class="prose mt-12">
     <h2>How I got here</h2>
-    <p>I started with Python in high school, for cybersecurity, solving rooms on TryHackMe at night. During the pandemic I picked up HTML, CSS, JavaScript, PHP and C/C++ and built small projects. Then I found machine learning and never really left.</p>
-    <p>I studied Computer Engineering at Kantipur Engineering College. I now work as an AI engineer at EkGhanti Services.</p>
-    <h2>Community</h2>
-    <p>I’m the Ed-Tech Lead for Google Developer Groups Kathmandu and the Notion Campus Leader at Kantipur Engineering College.</p>
-    <h2>Get in touch</h2>
-    <p>If you want to talk about AI, apps or music, email me at <a href="mailto:gaurovgiri@gmail.com">gaurovgiri@gmail.com</a>, or just ask the avatar on the <a href="/">home page</a>.</p>
+    <p><strong>High school:</strong> I learned Python to break into things (legally). Nights went to TryHackMe rooms, mornings to pretending I'd slept.</p>
+    <p><strong>The pandemic:</strong> stuck at home, I collected languages like souvenirs: HTML, CSS, JavaScript, PHP, C and C++. Then I met machine learning, and I never really left.</p>
+    <p><strong>College:</strong> Computer Engineering at Kantipur Engineering College, finished with distinction. Somewhere between the labs I won a few hackathons (one for a maths game starring a witch), placed 7th in Nepal at IEEEXtreme, and published two papers: one on spotting parasite eggs under a microscope, one on recognising birds by their songs.</p>
+    <p><strong>Work:</strong> five years of freelance apps and backends, including a Flutter app for the Bagmati Provincial Assembly. Then a year making machines speak Nepali at ekGhanti: speech recognition, a cloned voice, and a phone bot that took those 90,000 calls. Now I build AI agents at Proshore.</p>
+
+    <h2>Things I care about</h2>
+    <p><strong>Nepali AI.</strong> Most AI is built for English first. I like making it work for the language I think in.</p>
+    <p><strong>Small, honest models.</strong> If it runs on a cheap phone and admits when it doesn't know, I'm happy.</p>
+    <p><strong>Community.</strong> I'm the Ed-Tech Lead at Google Developer Groups Kathmandu, where I help run DevFest and Google I/O Extended. I've also organised UbuCon Asia 2025, taught Git to 50+ students as a Leapfrog Student Partner, and I'm a Notion Campus Leader, which means I have strong opinions about how you organise your notes.</p>
+
+    <h2>Say hi</h2>
+    <p>Talking about AI, Nepali speech tech, music or a role you're hiring for? Email <a href="mailto:gaurovgiri@gmail.com">gaurovgiri@gmail.com</a> or find me on <a href="https://www.linkedin.com/in/thegauravgiri">LinkedIn</a>. Or skip the inbox and ask my avatar on the <a href="/">home page</a>; it knows my CV better than I do.</p>
   </div>
 </Base>

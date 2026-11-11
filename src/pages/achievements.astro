@@ -4,10 +4,10 @@ import { achievements } from "../data/achievements";
 const groups = [...new Set(achievements.map((a) => a.group))];
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 ---
-<Base title="Achievements" wide description="Competitive programming, peer-reviewed research and community leadership by Gaurav Giri.">
+<Base title="Achievements" wide description="Peer-reviewed research and community leadership by Gaurav Giri.">
   <header class="max-w-3xl">
     <h1 class="display text-5xl">Achievements</h1>
-    <p class="mt-4 max-w-[58ch] text-lg text-slate">The recognition I'm proudest of: a global programming contest, peer-reviewed research, and leading developer communities in Nepal.</p>
+    <p class="mt-4 max-w-[58ch] text-lg text-slate">The recognition I'm proudest of: peer-reviewed research and leading developer communities in Nepal.</p>
   </header>
 
   {groups.map((g) => (

@@ -2,32 +2,73 @@
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import Agent from "../components/agent/Agent";
+import { projects } from "../data/projects";
 const posts = (await getCollection("blog", (p) => !p.data.draft)).sort((a, b) => +b.data.date - +a.data.date).slice(0, 3);
 const fmt = (d: Date) => d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+const stats = [
+  { value: "90,000+", label: "live phone calls handled by Nepali voice AI I built" },
+  { value: "2", label: "peer-reviewed papers in computer vision and audio" },
+  { value: "7th", label: "in Nepal at IEEEXtreme 2024, top 700 worldwide" },
+  { value: "Lead", label: "Ed-Tech, Google Developer Groups Kathmandu" },
+];
+const selected = ["Mitra", "Lightweight parasitic egg detection", "Aitihasik Katha"]
+  .map((n) => projects.find((p) => p.name === n)!)
+  .filter(Boolean);
 ---
 <Base stage>
   <Agent client:load api={import.meta.env.PUBLIC_AVATAR_API ?? ""} turnstileSiteKey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? ""} />
+  <div aria-hidden="true" class="h-20 bg-gradient-to-b from-[#0b1116] to-transparent"></div>
 
-  <div class="mx-auto grid max-w-7xl gap-x-16 gap-y-14 px-4 py-20 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-    <section aria-labelledby="who">
-      <h2 id="who" class="title text-3xl">Who you’re talking to</h2>
-      <p class="mt-5 max-w-[46ch] text-lg">
-        I’m an AI engineer in Kathmandu. I build speech, language and vision systems, and I lead developer communities in Nepal.
-      </p>
-      <p class="mt-4 max-w-[46ch] text-slate">
-        The avatar above is a 3D model of my face, fitted from one photo, speaking with my cloned voice. It can answer questions about my work in English or Nepali.
-      </p>
-      <ul class="mt-6 flex flex-wrap gap-x-6 gap-y-2">
-        <li><a class="link" href="/projects">See projects</a></li>
-        <li><a class="link" href="/cv">Read my CV</a></li>
-        <li><a class="link" href="/about">More about me</a></li>
+  <div class="mx-auto w-full max-w-6xl px-4 pb-24 sm:px-8">
+    <section aria-labelledby="who" class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-16">
+      <div>
+        <h2 id="who" class="title text-3xl">Who you’re talking to</h2>
+        <p class="mt-5 max-w-[46ch] text-lg">
+          I’m an AI and software engineer in Kathmandu. I build speech, language and vision systems that hold up in production, and I lead developer communities in Nepal.
+        </p>
+        <p class="mt-4 max-w-[46ch] text-slate">
+          The avatar above is a 3D model of me speaking with my cloned voice. Ask it about my work in English or Nepali.
+        </p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a class="btn btn-primary" href="/cv">View CV</a>
+          <a class="btn btn-quiet" href="mailto:gaurovgiri@gmail.com">Email me</a>
+        </div>
+      </div>
+      <ul class="grid grid-cols-2 gap-px self-start overflow-hidden rounded-2xl bg-haze ring-1 ring-haze" aria-label="Highlights">
+        {stats.map((s) => (
+          <li class="bg-mist p-5">
+            <p class="display text-4xl">{s.value}</p>
+            <p class="mt-2 text-sm leading-snug text-slate">{s.label}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section aria-labelledby="work" class="mt-20">
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <h2 id="work" class="title text-3xl">Selected work</h2>
+        <a class="link text-slate" href="/projects">All projects →</a>
+      </div>
+      <ul class="mt-6 grid gap-5 md:grid-cols-3">
+        {selected.map((p) => (
+          <li class="card flex flex-col">
+            {p.kind && <span class="eyebrow">{p.kind}</span>}
+            <h3 class="title mt-2 text-xl">{p.name}</h3>
+            {p.result && <p class="mt-2 font-semibold">{p.result}</p>}
+            <p class="mt-2 text-[0.95rem] text-slate">{p.description}</p>
+            {p.url && <p class="mt-auto pt-4"><a class="link ext text-sm" href={p.url} target="_blank" rel="noopener noreferrer">View code<span class="sr-only">: {p.name}</span></a></p>}
+          </li>
+        ))}
       </ul>
     </section>
 
     {posts.length > 0 && (
-      <section aria-labelledby="recent">
-        <h2 id="recent" class="title text-3xl">Recent writing</h2>
-        <ul class="mt-5 divide-y divide-haze border-y border-haze">
+      <section aria-labelledby="recent" class="mt-20">
+        <div class="flex flex-wrap items-end justify-between gap-3">
+          <h2 id="recent" class="title text-3xl">Recent writing</h2>
+          <a class="link text-slate" href="/blog">All writing →</a>
+        </div>
+        <ul class="mt-6 divide-y divide-haze border-y border-haze">
           {posts.map((p) => (
             <li>
               <a href={`/blog/${p.id}`} class="group grid gap-1 py-4 sm:grid-cols-[8rem_1fr] sm:gap-6">
@@ -37,7 +78,6 @@ const fmt = (d: Date) => d.toLocaleDateString("en-GB", { day: "numeric", month: 
             </li>
           ))}
         </ul>
-        <a class="link mt-4 inline-block" href="/blog">All writing</a>
       </section>
     )}
   </div>

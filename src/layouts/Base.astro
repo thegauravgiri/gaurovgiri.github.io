@@ -1,17 +1,24 @@
 ---
 import "../styles/global.css";
-interface Props { title?: string; description?: string; wide?: boolean; stage?: boolean }
-const { title, description = "Gaurav Giri is an AI engineer in Kathmandu working on speech, language and vision. Talk to his voice avatar in English or Nepali.", wide = false, stage = false } = Astro.props;
+import { getCollection } from "astro:content";
+interface Props { title?: string; description?: string; wide?: boolean; stage?: boolean; image?: string }
+const { title, description = "Gaurav Giri is an AI engineer in Kathmandu working on speech, language and vision. Talk to his voice avatar in English or Nepali.", wide = false, stage = false, image = "/og.jpg" } = Astro.props;
 const fullTitle = title ? `${title}, Gaurav Giri` : "Gaurav Giri, AI engineer";
+
+// "Writing" only appears once there is something published to read.
+const hasPosts = (await getCollection("blog", (p) => !p.data.draft)).length > 0;
 const nav = [
-  { href: "/blog", label: "Writing" },
+  ...(hasPosts ? [{ href: "/blog", label: "Writing" }] : []),
   { href: "/projects", label: "Projects" },
   { href: "/achievements", label: "Achievements" },
   { href: "/cv", label: "CV" },
   { href: "/about", label: "About" },
 ];
-const frame = wide ? "max-w-7xl" : "max-w-3xl";
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
+// Header and footer are the same width on every page; only the content column changes.
+const shell = "mx-auto w-full max-w-6xl px-4 sm:px-8";
 ---
 <!doctype html>
 <html lang="en">
@@ -20,10 +27,20 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Gaurav Giri" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#0e1519" />
     <link rel="icon" href="/favicon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="alternate" type="application/rss+xml" title="Writing" href="/rss.xml" />
+    {hasPosts && <link rel="alternate" type="application/rss+xml" title="Writing" href="/rss.xml" />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Devanagari:wdth,wght@75..125,300..750&family=Anek+Latin:wdth,wght@75..125,300..750&display=swap" />
@@ -34,11 +51,14 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
       } catch {}
     </script>
   </head>
-  <body class="min-h-screen overflow-x-clip">
+  <body class:list={["flex min-h-dvh flex-col overflow-x-clip", !stage && "page-glow"]}>
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-on-ink">Skip to content</a>
-    <header class:list={["mx-auto grid grid-cols-[1fr_auto] print:hidden", stage ? "on-stage absolute inset-x-0 top-0 z-20 max-w-7xl" : frame," items-center gap-y-1 px-4 pt-5 pb-3 sm:flex sm:gap-x-6 sm:px-8"]}>
-      <a href="/" class="title text-lg" aria-current={path === "/" ? "page" : undefined}>Gaurav Giri</a>
-      <nav aria-label="Main" class="col-span-2 row-start-2 -mx-4 flex gap-x-1 overflow-x-auto px-2 text-[0.98rem] [scrollbar-width:none] sm:order-none sm:mx-0 sm:flex-1 sm:justify-end sm:px-0">
+    <header class:list={[shell, "grid grid-cols-[1fr_auto] items-center gap-y-1 pt-5 pb-3 sm:flex sm:gap-x-6 print:hidden", stage && "on-stage absolute inset-x-0 top-0 z-20"]}>
+      <a href="/" class="title inline-flex items-center gap-2.5 text-lg" aria-current={path === "/" ? "page" : undefined}>
+        <img src="/img/face.webp" alt="" width="32" height="32" class="size-8 rounded-full object-cover ring-1 ring-white/15" />
+        Gaurav Giri
+      </a>
+      <nav aria-label="Main" class="nav-scroll col-span-2 row-start-2 -mx-4 flex gap-x-1 overflow-x-auto px-2 text-[0.98rem] [scrollbar-width:none] sm:order-none sm:mx-0 sm:flex-1 sm:justify-end sm:px-0">
         {nav.map((n) => (
           <a href={n.href} aria-current={path.startsWith(n.href) ? "page" : undefined}
              class="shrink-0 rounded-full px-2.5 py-1.5 text-slate hover:text-ink aria-[current=page]:text-ink aria-[current=page]:underline aria-[current=page]:decoration-marigold aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-[6px]">{n.label}</a>
@@ -48,15 +68,19 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
         <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
       </button>
     </header>
-    <main id="main" class:list={stage ? [] : ["mx-auto px-4 sm:px-8 pb-20 pt-6", frame]}><slot /></main>
-    <footer class:list={["mx-auto flex flex-wrap print:hidden", stage ? "max-w-7xl" : frame, " items-center gap-x-6 gap-y-2 border-t border-haze px-4 py-8 text-sm text-slate sm:px-8"]}>
+    <main id="main" class:list={["flex-1", !stage && [shell, "pb-20 pt-8"]]}>
+      {stage ? <slot /> : <div class:list={[wide ? "max-w-none" : "max-w-3xl"]}><slot /></div>}
+    </main>
+    <footer class:list={[shell, "text-sm text-slate print:hidden"]}>
+     <div class="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-haze py-8">
       <span>Gaurav Giri, Kathmandu</span>
-      <span class="flex gap-5">
+      <span class="flex flex-wrap gap-x-5 gap-y-1">
         <a class="link" href="https://github.com/thegauravgiri">GitHub</a>
         <a class="link" href="https://www.linkedin.com/in/thegauravgiri">LinkedIn</a>
         <a class="link" href="mailto:gaurovgiri@gmail.com">Email</a>
-        <a class="link" href="/rss.xml">RSS</a>
+        {hasPosts && <a class="link" href="/rss.xml">RSS</a>}
       </span>
+     </div>
     </footer>
     <script is:inline>
       document.getElementById("theme").addEventListener("click", () => {

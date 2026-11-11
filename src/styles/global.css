@@ -6,14 +6,15 @@
 /* Palette: a misty Kathmandu morning. The only warm colour on the page is the avatar itself;
    marigold is reserved for the live voice state. */
 :root {
-  --mist: #e4eaee;      /* page */
-  --haze: #cbd5dc;      /* rules, quiet surfaces */
-  --well: #d7e0e6;      /* transcript well */
-  --slate: #56656f;     /* secondary text */
+  --mist: #f4f6f6;      /* page */
+  --haze: #d6dde1;      /* rules, quiet surfaces */
+  --well: #e6ecef;      /* transcript well */
+  --slate: #4a5862;     /* secondary text */
   --ink: #102331;       /* text, primary actions */
   --on-ink: #f3f6f8;
   --marigold: #f0a202;  /* voice is live */
   --aperture: #102331;  /* behind the avatar */
+  --accent-text: #8a5800; /* marigold text that passes contrast on light */
 }
 .dark {
   --mist: #0e1519;
@@ -23,6 +24,7 @@
   --ink: #eef2f4;
   --on-ink: #0e1519;
   --aperture: #1a2c38;
+  --accent-text: #f2c467;
 }
 
 @theme inline {
@@ -34,6 +36,7 @@
   --color-on-ink: var(--on-ink);
   --color-marigold: var(--marigold);
   --color-aperture: var(--aperture);
+  --color-accent-text: var(--accent-text);
   --font-sans: "Anek Latin", "Anek Devanagari", ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -63,6 +66,7 @@ body { font-family: var(--font-sans); font-size: 1.0625rem; line-height: 1.55; f
 /* Long-form text */
 .prose {
   --tw-prose-body: var(--ink);
+  --tw-prose-lead: var(--slate);
   --tw-prose-headings: var(--ink);
   --tw-prose-links: var(--ink);
   --tw-prose-bold: var(--ink);
@@ -77,6 +81,19 @@ body { font-family: var(--font-sans); font-size: 1.0625rem; line-height: 1.55; f
   max-width: 66ch;
 }
 .prose :where(h2, h3) { font-weight: 600; font-variation-settings: "wdth" 110; }
+.prose :where(h2) { margin-top: 2em; margin-bottom: .6em; }
+
+/* Inner pages: a faint marigold glow behind the title, echoing the warm home stage. */
+.page-glow { background-image: radial-gradient(700px 380px at 12% -80px, color-mix(in oklab, var(--marigold) 9%, transparent), transparent 70%); background-repeat: no-repeat; }
+
+/* Small UI parts shared by inner pages */
+.chip { display: inline-flex; align-items: center; border-radius: 999px; padding: .2rem .6rem; font-size: .78rem; line-height: 1.2; color: var(--slate); box-shadow: inset 0 0 0 1px var(--haze); }
+.pill-accent { display: inline-flex; align-items: center; border-radius: 999px; padding: .2rem .65rem; font-size: .75rem; font-weight: 650; letter-spacing: .01em; background: color-mix(in oklab, var(--marigold) 18%, transparent); color: var(--ink); }
+.card { border-radius: 1.25rem; padding: 1.5rem; background: color-mix(in oklab, var(--well) 70%, transparent); box-shadow: inset 0 0 0 1px var(--haze); }
+.ext::after { content: "\2197"; display: inline-block; margin-left: .2em; font-size: .85em; opacity: .7; text-decoration: none; }
+.eyebrow { font-size: .78rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; color: var(--slate); }
+/* Mobile nav: fade the right edge so it's clear the row scrolls. */
+@media (max-width: 639px) { .nav-scroll { -webkit-mask-image: linear-gradient(to right, #000 85%, transparent); mask-image: linear-gradient(to right, #000 85%, transparent); padding-right: 2rem; } }
 
 /* ---------- The stage (home page) ---------- */
 .on-stage, .on-stage .text-slate { color: rgb(255 255 255 / .82); }
@@ -134,8 +151,8 @@ body { font-family: var(--font-sans); font-size: 1.0625rem; line-height: 1.55; f
 
 /* Printing (the CV's "Save as PDF"): always light, black on white, no site chrome. */
 @media print {
-  :root, .dark { --mist: #fff; --haze: #d5dbe0; --slate: #44525c; --ink: #0b1a24; --on-ink: #fff; color-scheme: light; }
-  html, body { background: #fff; font-size: 10.5pt; }
+  :root, .dark { --mist: #fff; --haze: #d5dbe0; --slate: #44525c; --ink: #0b1a24; --on-ink: #fff; --accent-text: #7a4e00; color-scheme: light; }
+  html, body { background: #fff !important; background-image: none !important; font-size: 10.5pt; }
   @page { margin: 14mm 14mm; }
   main { padding-top: 0 !important; }
   .print\:hidden { display: none !important; } /* beats .btn's display */

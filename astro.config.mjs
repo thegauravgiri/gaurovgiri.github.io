@@ -5,7 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  site: "https://gauravgiri.com.np",
+  site: "https://www.gauravgiri.com.np", // matches public/CNAME
   integrations: [react(), mdx(), sitemap()],
   vite: { plugins: [tailwindcss()] },
 });

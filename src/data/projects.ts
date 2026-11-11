@@ -1,12 +1,25 @@
 // Projects shown on /projects. `featured` ones get the top section; the rest are listed below.
 // `url` is optional: leave it out for work that has no public repo or page.
-export type Project = { name: string; url?: string; description: string; tags: string[]; featured?: boolean; note?: string };
+export type Project = {
+  name: string;
+  url?: string;          // main link (code repo, or the live page)
+  live?: boolean;        // url is a live page rather than code
+  kind?: string;         // small label above the title on featured cards
+  result?: string;       // the headline outcome, shown in bold on featured cards
+  description: string;
+  tags: string[];
+  featured?: boolean;
+  note?: string;
+};
 
 const gh = (repo: string) => `https://github.com/thegauravgiri/${repo}`;
 
 export const projects: Project[] = [
   {
     name: "This website",
+    kind: "Live",
+    live: true,
+    result: "Talk to it on the home page, in English or Nepali",
     url: "/",
     featured: true,
     description: "A portfolio you can talk to. Ask the 3D avatar on the home page anything about my work, in English or Nepali, and it answers in my own cloned voice.",
@@ -14,6 +27,8 @@ export const projects: Project[] = [
   },
   {
     name: "Mitra",
+    kind: "Open source",
+    result: "30+ tools · no tokens stored on disk",
     url: gh("mitra-mcp"),
     featured: true,
     description: "An MCP server that lets AI assistants work with Azure DevOps, Jira, Clockify and Google Calendar. Credentials are protected with OAuth 2.1 (PKCE) and Cloud KMS envelope encryption, so tokens never sit in local config files. 30+ validated tools.",
@@ -21,6 +36,8 @@ export const projects: Project[] = [
   },
   {
     name: "Lightweight parasitic egg detection",
+    kind: "Research",
+    result: "0.96 mAP@0.5 with 58% fewer parameters",
     url: gh("yolo-enhancedconv"),
     featured: true,
     note: "Published in IJET, 2025",
@@ -29,6 +46,8 @@ export const projects: Project[] = [
   },
   {
     name: "Aitihasik Katha",
+    kind: "Generative AI",
+    result: "Archive PDFs in, narrated documentary out",
     url: gh("aitihasik-katha"),
     featured: true,
     description: "Turns English and Nepali historical documents into narrated documentary videos: OCR, retrieval, script writing, narration and video rendering in one pipeline.",
@@ -36,6 +55,8 @@ export const projects: Project[] = [
   },
   {
     name: "Minecraft agents",
+    kind: "Multi-agent AI",
+    result: "Bots that plan, split work and help each other",
     url: gh("minecraft-agents"),
     featured: true,
     description: "Autonomous AI players that act like real teammates. They chat, pick a leader, split up big builds, fight mobs side by side and rescue each other at night. Just say “build a castle here”.",
@@ -43,6 +64,8 @@ export const projects: Project[] = [
   },
   {
     name: "ChatChamber",
+    kind: "Systems",
+    result: "Plain C, no frameworks, valgrind-clean",
     url: gh("chat-chamber"),
     featured: true,
     note: "Finalist, IEEE “Can You C?”",

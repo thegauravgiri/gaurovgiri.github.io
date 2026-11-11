@@ -7,12 +7,26 @@ export async function getStaticPaths() {
 }
 const { post } = Astro.props;
 const { Content } = await render(post);
+const words = (post.body ?? "").split(/\s+/).filter(Boolean).length;
+const minutes = Math.max(1, Math.round(words / 220));
 ---
 <Base title={post.data.title} description={post.data.description}>
   <article>
-    <a href="/blog" class="link text-slate">All writing</a>
+    <a href="/blog" class="link text-slate">← All writing</a>
     <h1 class="display mt-6 text-[clamp(2.4rem,5vw,3.6rem)]">{post.data.title}</h1>
-    <p class="mt-4 text-slate"><time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</time></p>
-    <div class="prose mt-10"><Content /></div>
+    <p class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-slate">
+      <time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</time>
+      <span aria-hidden="true">·</span><span>{minutes} min read</span>
+      {post.data.tags.map((t) => <span class="chip">{t}</span>)}
+    </p>
+    <div class="prose mt-10 leading-[1.7]"><Content /></div>
   </article>
+  <aside class="card mt-16 flex flex-wrap items-center gap-5" aria-label="About the author">
+    <img src="/img/face.webp" alt="" width="64" height="64" class="size-16 rounded-full object-cover" />
+    <div class="min-w-0 flex-1">
+      <p class="font-semibold">Written by Gaurav Giri</p>
+      <p class="text-slate">AI and software engineer in Kathmandu. Questions about this post? Ask my voice avatar.</p>
+    </div>
+    <a class="btn btn-primary" href="/">Talk to my avatar →</a>
+  </aside>
 </Base>

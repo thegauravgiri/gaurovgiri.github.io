@@ -1,37 +1,51 @@
 ---
 import Base from "../layouts/Base.astro";
-import { projects, type Project } from "../data/projects";
+import { projects } from "../data/projects";
 const featured = projects.filter((p) => p.featured);
 const more = projects.filter((p) => !p.featured);
-const external = (p: Project) => !!p.url && /^https?:/.test(p.url);
+const isExternal = (u?: string) => !!u && /^https?:/.test(u);
 ---
-<Base title="Projects" description="Things Gaurav Giri has built: voice AI, AI agents, computer vision research, systems programming and games.">
-  <h1 class="display text-5xl">Projects</h1>
-  <p class="mt-4 max-w-[60ch] text-slate">Things I've built at night, at hackathons and for research. Work for clients isn't listed here.</p>
+<Base title="Projects" wide description="Things Gaurav Giri has built: voice AI, AI agents, computer vision research, systems programming and games.">
+  <header class="max-w-3xl">
+    <h1 class="display text-5xl">Projects</h1>
+    <p class="mt-4 max-w-[58ch] text-lg text-slate">Things I've built on my own, at hackathons and for research. Client work stays confidential, so it lives on my <a class="link" href="/cv">CV</a> instead.</p>
+  </header>
 
-  <ul class="mt-10 divide-y divide-haze border-y border-haze">
+  <ul class="mt-12 grid gap-5 md:grid-cols-2">
     {featured.map((p) => (
-      <li class="py-6">
-        <h2 class="title text-2xl">
-          {p.url ? <a class="link" href={p.url} {...(external(p) ? { target: "_blank", rel: "noopener noreferrer" } : {})}>{p.name}</a> : p.name}
-        </h2>
-        {p.note && <p class="mt-1 text-sm font-medium text-slate">{p.note}</p>}
-        <p class="mt-2 max-w-[60ch]">{p.description}</p>
-        <p class="mt-2 text-slate">Built with {p.tags.join(", ")}</p>
+      <li class="card flex flex-col">
+        <div class="flex flex-wrap items-center gap-2">
+          {p.kind && <span class="eyebrow">{p.kind}</span>}
+          {p.note && <span class="pill-accent">{p.note}</span>}
+        </div>
+        <h2 class="title mt-3 text-2xl">{p.name}</h2>
+        {p.result && <p class="mt-2 font-semibold">{p.result}</p>}
+        <p class="mt-2 text-slate">{p.description}</p>
+        <ul class="mt-4 flex flex-wrap gap-1.5" aria-label="Built with">
+          {p.tags.map((t) => <li class="chip">{t}</li>)}
+        </ul>
+        {p.url && (
+          <p class="mt-auto pt-5">
+            <a class:list={["btn btn-quiet !px-4 !py-2 text-sm", isExternal(p.url) && "ext"]} href={p.url}
+               {...(isExternal(p.url) ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+              {p.live ? "Try it" : "View code"}<span class="sr-only">: {p.name}</span>
+            </a>
+          </p>
+        )}
       </li>
     ))}
   </ul>
 
-  <h2 class="title mt-14 text-2xl">More things I've made</h2>
-  <ul class="mt-4 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+  <h2 class="title mt-20 text-3xl">More things I've made</h2>
+  <ul class="mt-6 grid gap-x-10 gap-y-8 border-t border-haze pt-8 sm:grid-cols-2 lg:grid-cols-3">
     {more.map((p) => (
       <li>
         <h3 class="font-semibold">
-          {p.url ? <a class="link" href={p.url} target="_blank" rel="noopener noreferrer">{p.name}</a> : p.name}
+          {p.url ? <a class="link ext" href={p.url} target="_blank" rel="noopener noreferrer">{p.name}</a> : p.name}
         </h3>
-        {p.note && <p class="text-sm text-slate">{p.note}</p>}
-        <p class="mt-1 text-[0.95rem] leading-snug">{p.description}</p>
-        <p class="mt-1 text-sm text-slate">{p.tags.join(", ")}</p>
+        {p.note && <p class="mt-0.5 text-sm text-slate">{p.note}</p>}
+        <p class="mt-1.5 text-[0.95rem] leading-snug">{p.description}</p>
+        <p class="mt-1.5 text-sm text-slate">{p.tags.join(" · ")}</p>
       </li>
     ))}
   </ul>

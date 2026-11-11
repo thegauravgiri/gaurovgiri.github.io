@@ -3,6 +3,7 @@ title: "My First Blog Post!"
 description: "Hello world, a placeholder post to get the blog going."
 date: 2025-10-24
 tags: [ai, machine-learning, portfolio]
+draft: true
 ---
 
 ## Introduction

@@ -2,21 +2,31 @@
 import Base from "../layouts/Base.astro";
 import { achievements } from "../data/achievements";
 const groups = [...new Set(achievements.map((a) => a.group))];
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 ---
-<Base title="Achievements" description="Competitions, research papers and community work by Gaurav Giri.">
-  <h1 class="display text-5xl">Achievements</h1>
+<Base title="Achievements" wide description="Competitive programming, peer-reviewed research and community leadership by Gaurav Giri.">
+  <header class="max-w-3xl">
+    <h1 class="display text-5xl">Achievements</h1>
+    <p class="mt-4 max-w-[58ch] text-lg text-slate">The recognition I'm proudest of: a global programming contest, peer-reviewed research, and leading developer communities in Nepal.</p>
+  </header>
+
   {groups.map((g) => (
-    <section class="mt-12">
-      <h2 class="title text-lg text-slate">{g}</h2>
-      <ul class="mt-3 divide-y divide-haze border-y border-haze">
-        {achievements.filter((a) => a.group === g).map((a) => (
-          <li class="grid gap-1 py-5 sm:grid-cols-[1fr_auto] sm:gap-6">
-            <div>
-              <h3 class="title text-xl">{a.title}</h3>
-              <p class="mt-1 text-slate">{a.org}</p>
-              <p class="mt-2 max-w-[60ch]">{a.description}</p>
+    <section class="mt-14" aria-labelledby={slug(g)}>
+      <h2 id={slug(g)} class="eyebrow">{g}</h2>
+      <ul class="mt-4 grid gap-5 md:grid-cols-2">
+        {achievements.filter((a) => a.group === g).map((a, _, list) => (
+          <li class:list={["card flex flex-col", list.length === 1 && "md:col-span-2"]}>
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="pill-accent">{a.result}</span>
+              {a.year && <span class="text-sm text-slate">{a.year}</span>}
             </div>
-            {a.year && <p class="text-slate sm:text-right">{a.year}</p>}
+            <h3 class="title mt-3 text-xl">{a.event}</h3>
+            <p class="mt-2 text-slate">{a.description}</p>
+            {a.link && (
+              <p class="mt-auto pt-4">
+                <a class="link ext text-sm" href={a.link.href} target="_blank" rel="noopener noreferrer">{a.link.label}</a>
+              </p>
+            )}
           </li>
         ))}
       </ul>

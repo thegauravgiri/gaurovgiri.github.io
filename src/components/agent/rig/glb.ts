@@ -141,7 +141,7 @@ export async function buildFromGlb(url: string, renderer?: THREE.WebGLRenderer):
       // Brows lift a touch while speaking
       set("browInnerUp", 0.08 + f.open * 0.15);
       // Eyes a touch more open than the fitted neutral (the generic lids sit low)
-      set("eyeWideLeft", 0.3); set("eyeWideRight", 0.3);
+      set("eyeWideLeft", 0.12); set("eyeWideRight", 0.12);
       blink(t);
       // Idle head motion, plus small nods with speech
       motion.rotation.set(
